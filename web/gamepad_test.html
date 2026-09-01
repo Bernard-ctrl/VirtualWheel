@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VirtualWheel Browser Gamepad Test</title>
+  <style>
+    body { background:#11151b; color:#e8edf2; font:16px system-ui,sans-serif; margin:32px; }
+    .card { background:#202631; border-radius:12px; max-width:700px; padding:24px; }
+    .axis { align-items:center; display:flex; gap:12px; margin:18px 0; }
+    .bar { background:#0c0f13; border-radius:8px; height:22px; position:relative; width:100%; }
+    .center { background:#687381; height:100%; left:50%; position:absolute; width:2px; }
+    .value { background:#32b7ed; border-radius:8px; height:100%; left:50%; position:absolute; transform-origin:left; }
+    code { color:#80d8ff; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>VirtualWheel Browser Gamepad Test</h1>
+    <p id="status">Connect or move vJoy, then click this page.</p>
+    <p id="device">Device: none</p>
+    <div class="axis"><strong>X</strong><div class="bar"><div class="center"></div><div id="xbar" class="value"></div></div><code id="xvalue">0.00</code></div>
+    <div class="axis"><strong>Y</strong><div class="bar"><div class="center"></div><div id="ybar" class="value"></div></div><code id="yvalue">0.00</code></div>
+    <p>Expected: X changes with steering; Y changes with thumb throttle/brake.</p>
+  </div>
+  <script>
+    const status = document.getElementById('status');
+    const device = document.getElementById('device');
+    function drawAxis(bar, output, value) {
+      const percent = Math.max(-1, Math.min(1, value)) * 50;
+      bar.style.width = Math.abs(percent) + '%';
+      bar.style.left = percent < 0 ? (50 + percent) + '%' : '50%';
+      output.textContent = value.toFixed(2);
+    }
+    function update() {
+      const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+      const pad = Array.from(pads).find(p => p && p.connected && /vjoy/i.test(p.id)) ||
+                  Array.from(pads).find(p => p && p.connected);
+      if (!pad) {
+        status.textContent = 'No browser gamepad detected. Click the page and enable Step 8.';
+      } else {
+        status.textContent = 'Gamepad detected';
+        device.textContent = `Device: ${pad.id}`;
+        drawAxis(document.getElementById('xbar'), document.getElementById('xvalue'), pad.axes[0] || 0);
+        drawAxis(document.getElementById('ybar'), document.getElementById('yvalue'), pad.axes[1] || 0);
+      }
+      requestAnimationFrame(update);
+    }
+    window.addEventListener('gamepadconnected', event => {
+      status.textContent = `Connected: ${event.gamepad.id}`;
+    });
+    update();
+  </script>
+</body>
+</html>
