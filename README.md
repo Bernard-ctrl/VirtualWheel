@@ -43,6 +43,31 @@ Set-ExecutionPolicy -Scope Process Bypass
 MediaPipe is pinned to the legacy-compatible `0.10.21` release and NumPy is
 kept below version 2 because the source uses the MediaPipe Solutions API.
 
+## Full vJoy setup
+
+vJoy is optional software that creates a virtual joystick in Windows. Use it
+for analog steering; keyboard mode does not require vJoy.
+
+1. Download a signed Windows installer from the [vJoy releases](https://github.com/jshafer817/vJoy/releases).
+2. Run the installer as Administrator and restart Windows if requested.
+3. Open **Configure vJoy** from the Start menu.
+4. Enable **vJoy** at the bottom of the configuration window.
+5. Select device `1` and configure one device.
+6. Enable the `X` and `Y` axes. Buttons and POV hats are optional.
+7. Click **Apply**, then close the configuration window. vJoy runs in the
+   background; there is no separate program that must remain open.
+8. Verify the device with `Win + R`, then enter `joy.cpl`.
+9. Open **vJoy Device 1 → Properties** and confirm that the device appears.
+10. Start Step 8 or the integrated application, select vJoy mode, press `E`,
+    and move your hands. X should move with steering and Y with throttle or
+    brake.
+
+If `joy.cpl` does not respond, fix the vJoy installation or configuration
+before testing a racing game. If `joy.cpl` responds but the game does not,
+open the game's controller settings and bind **vJoy Device 1 → X Axis** for
+steering and **Y Axis** for throttle/brake. Some games support only XInput and
+will not accept vJoy's DirectInput device.
+
 ## Start the integrated application
 
 ```powershell

@@ -29,9 +29,9 @@ normal exit.
 
 Use Windows' vJoy monitor or a compatible game to verify that the X axis moves
 with steering. Verify the Y axis moves to maximum with thumb up and minimum
-with thumb down. The local test racing game from
-`src/test_racing_game.py` reads keyboard input, not vJoy; use a gamepad tester
-for this step.
+with thumb down. The local test racing game from `src/test_racing_game.py`
+reads vJoy X/Y axes as well as keyboard input. Its terminal should report
+`Joystick selected: vJoy`.
 
 ## Limitations
 
